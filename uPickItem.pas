@@ -98,24 +98,6 @@ begin
 
   s := AnsiLowerCase(txtSearch.Text);
 
-  try
-    if lbItems.Tag = TAG_INDEX then
-      id := lbItems.ItemIndex
-    else
-      id := Integer(lbItems.Items.Objects[lbItems.ItemIndex]);
-  finally
-    if id >= 0 then Form1.txtItemId.Text := IntToStr(id);
-    //ModalResult := mrOk;
-    //Close;
-  end;
-end;
-
-procedure TfrmPickItem.lbItemsDblClick(Sender: TObject);
-var
-  s: String;
-  i: Integer;
-begin
-
   lbItems.Canvas.Lock;
   try
     lbItems.Tag := TAG_DATA;
@@ -130,6 +112,23 @@ begin
 
   finally
     lbItems.Canvas.Unlock;
+  end;
+
+end;
+
+procedure TfrmPickItem.lbItemsDblClick(Sender: TObject);
+var
+  id: Integer;
+begin
+  try
+    if lbItems.Tag = TAG_INDEX then
+      id := lbItems.ItemIndex
+    else
+      id := Integer(lbItems.Items.Objects[lbItems.ItemIndex]);
+  finally
+    if id >= 0 then Form1.txtItemId.Text := IntToStr(id);
+    //ModalResult := mrOk;
+    //Close;
   end;
 
   lbItems.ItemIndex := 0;
