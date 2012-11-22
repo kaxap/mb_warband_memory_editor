@@ -48,6 +48,8 @@ type
     { Private declarations }
     procedure EditProcessData(Action: TDataAction; Item: TGameItem;
       Param: Integer = 0);
+    function SetWeaponSkillLimit(const hProcess: THandle;
+      limit: Double): Boolean;
   public
     { Public declarations }
   end;
@@ -297,31 +299,42 @@ begin
   end;}
 
   hProcess := OpenProcess(PROCESS_ALL_ACCESS, False, dwProcessId);
-  if (hProcess = 0) then
-  begin
-    tmrModDataSync.Enabled := False;
-    MessageBox(Handle, 'Cannot open process', nil, MB_ICONERROR);
-    Exit;
-  end;
 
-  if NOT ReadProcessMemory(hProcess,
-    Pointer(TABLE_ADDR), @pTable, SizeOf(pTable), dwBytesRead) OR
-      (dwBytesRead <> SizeOf(pTable)) then
-  begin
-    Application.MessageBox('Cannot READ data from process'' memory', nil,
-      MB_ICONERROR);
+  try
+  
+    if (hProcess = 0) then
+    begin
+      tmrModDataSync.Enabled := False;
+      MessageBox(Handle, 'Cannot open process', nil, MB_ICONERROR);
+      Exit;
+    end;
+
+    if NOT ReadProcessMemory(hProcess,
+      Pointer(TABLE_ADDR), @pTable, SizeOf(pTable), dwBytesRead) OR
+        (dwBytesRead <> SizeOf(pTable)) then
+    begin
+      Application.MessageBox('Cannot READ data from process'' memory', nil,
+        MB_ICONERROR);
+      CloseHandle(hProcess);
+      Exit;
+    end;
+
+    pTable := pTable + CHAR_OFFSET;
+
+    if ReadProcessMemory(hProcess, Pointer(pTable), @pCharacter, SizeOf(pCharacter),
+      dwBytesRead) then
+    begin
+      dwInventory := pCharacter + INVENTORY_OFFSET;
+      txtAddr.Text := Format('%x', [dwInventory]);
+    end;
+
+    SetWeaponSkillLimit(hProcess, 10000.0);
+    
+  finally
     CloseHandle(hProcess);
-    Exit;
   end;
 
-  pTable := pTable + CHAR_OFFSET;
 
-  if ReadProcessMemory(hProcess, Pointer(pTable), @pCharacter, SizeOf(pCharacter),
-    dwBytesRead) then
-  begin
-    dwInventory := pCharacter + INVENTORY_OFFSET;
-    txtAddr.Text := Format('%x', [dwInventory]);
-  end;
 end;
 
 procedure TForm1.txtItemIdKeyPress(Sender: TObject; var Key: Char);
@@ -390,6 +403,46 @@ begin
     if frmPartyOpts.RefreshGameData then
       frmPartyOpts.Show;
   end;
+end;
+
+function TForm1.SetWeaponSkillLimit(const hProcess: THandle;
+  limit: Double): Boolean;
+
+  procedure ShowLastError;
+  begin
+    MessageBox(Handle,
+      PChar('Error on writeing max weapon skill limit: ' +
+      SysErrorMessage(GetLastError())), nil, MB_ICONERROR);
+  end;
+
+const
+  WEAPON_SKILL_LIMIT_ADDR:DWORD = $008EAE98;
+
+var
+  bytesWritten: DWORD;
+  OldProtect: DWORD;
+  temp: DWORD;
+begin
+  Result := VirtualProtectEx(hProcess, Pointer(WEAPON_SKILL_LIMIT_ADDR),
+    SizeOf(limit), PAGE_EXECUTE_READWRITE, OldProtect);
+
+  if NOT Result then
+  begin
+    ShowLastError;
+    Exit;
+  end;
+
+  Result := WriteProcessMemory(hProcess, Pointer(WEAPON_SKILL_LIMIT_ADDR),
+    @limit, SizeOf(limit), bytesWritten) AND (bytesWritten = SizeOf(limit));
+
+  if NOT Result then
+    ShowLastError;
+
+  Result := VirtualProtectEx(hProcess, Pointer(WEAPON_SKILL_LIMIT_ADDR),
+    SizeOf(limit), OldProtect, temp);
+
+  if NOT Result then
+    ShowLastError;
 end;
 
 end.
