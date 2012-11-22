@@ -266,8 +266,8 @@ end;
 
 procedure TForm1.btnGuessAddrClick(Sender: TObject);
 const
-  CHAR_OFFSET =  $140DC; { $140EC;}
-  TABLE_ADDR =  $009f3e20; { $009c4de8;}
+  CHAR_OFFSET =  { $140DC;} $140EC;
+  TABLE_ADDR =   $0099BEF4; { $009f3e20;} { $009c4de8;}
   INVENTORY_OFFSET = $2D0;
 var
   dwProcessId, dwAddress: DWORD;
@@ -278,7 +278,7 @@ var
   dwInventory: DWORD;
   wnd: HWND;
 begin
-   wnd := FindWindow(nil, 'Mount&Blade Warband');
+  wnd := FindWindow(nil, 'Mount&Blade Warband');
   if wnd > 0 then
   begin
     GetWindowThreadProcessId(wnd, @dwProcessId);
