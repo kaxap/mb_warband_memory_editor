@@ -49,10 +49,10 @@ uses uPickTroop, uEditUnit;
 
 function TfrmPartyOpts.ObtainBaseAddr: Boolean;
 const
-  ADDR_STATIC = $9F3E20; { $009c4de8;}
-  OFFSET1 = $138E4 + $7C0; { $140b4;}
+  ADDR_STATIC = $009D5E2C; {old $9F3E20;} { $009c4de8;}
+  OFFSET1 = $138E0 + $7E0; {old $138E4 + $7C0; } { $140b4;}
   OFFSET2 = $0;
-  OFFSET3 = $234; { $23c;}
+  OFFSET3 = $23C; {old $234;} { $23c;}
   OFFSET_COUNT = $c;
 
 var
