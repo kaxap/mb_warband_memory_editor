@@ -61,7 +61,7 @@ var
 
 implementation
 
-uses uPickItem, uConst, uCharacterOpts, uPartyOpts;
+uses uPickItem, uConst, uCharacterOpts, uPartyOpts, uPickTroop;
 
 {$R *.dfm}
 
@@ -398,6 +398,7 @@ begin
 
   frmPartyOpts.dwProcessId := dwProcessId;
 
+  //frmPickUnit.Show;
   if frmPartyOpts.ObtainBaseAddr then
   begin
     if frmPartyOpts.RefreshGameData then
