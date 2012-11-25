@@ -242,7 +242,7 @@ begin
   hProcess := OpenProcess(PROCESS_ALL_ACCESS, FAlse, dwProcessId);
   if (hProcess = 0) then
   begin
-    Application.MessageBox('Cannot open process', nil, MB_ICONERROR);
+    //Application.MessageBox('Cannot open process', nil, MB_ICONERROR);
     Exit;
   end;
 
