@@ -1,6 +1,6 @@
 object Form1: TForm1
-  Left = 187
-  Top = 179
+  Left = 245
+  Top = 261
   BorderIcons = [biSystemMenu, biMinimize]
   BorderStyle = bsSingle
   Caption = 'M&B Warband helper'

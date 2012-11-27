@@ -49,7 +49,7 @@ uses uPickTroop, uEditUnit;
 
 function TfrmPartyOpts.ObtainBaseAddr: Boolean;
 const
-  ADDR_STATIC = $009D5E2C; {old $9F3E20;} { $009c4de8;}
+  ADDR_STATIC = $0099BEF4; {1.154 $009D5E2C;} {old $9F3E20;} { $009c4de8;}
   OFFSET1 = $138D4 + $7E0; {old $138E4 + $7C0; } { $140b4;}
   OFFSET2 = $0;
   OFFSET3 = $23C; {old $234;} { $23c;}

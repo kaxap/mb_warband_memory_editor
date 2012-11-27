@@ -269,7 +269,7 @@ end;
 procedure TForm1.btnGuessAddrClick(Sender: TObject);
 const
   CHAR_OFFSET =  { $140DC;} $140EC;
-  TABLE_ADDR =  $009D5E2C;  {1.154 $0099BEF4;} { $009f3e20;} { $009c4de8;}
+  TABLE_ADDR =  {1.153 $009D5E2C; } {1.154 } $0099BEF4; { $009f3e20;} { $009c4de8;}
   INVENTORY_OFFSET = $2D0;
 var
   dwProcessId, dwAddress: DWORD;
@@ -290,6 +290,16 @@ begin
     //txtProcessId.Text := '0';
     Exit;
   end;
+
+  //for more comfortly playing in windowed mode
+  //remove borders
+  SetWindowLong(wnd, GWL_STYLE, GetWindowLong(Handle, GWL_STYLE) XOR WS_OVERLAPPEDWINDOW);
+
+  //make always on top
+  SetWindowPos(wnd, HWND_TOP,
+    Monitor.Left, Monitor.Top, Monitor.Width, Monitor.Height,
+    SWP_SHOWWINDOW);
+
 
   {try
     dwProcessId := StrToInt('$' + txtProcessId.Text);
@@ -417,7 +427,7 @@ function TForm1.SetWeaponSkillLimit(const hProcess: THandle;
   end;
 
 const
-  WEAPON_SKILL_LIMIT_ADDR:DWORD = $008F5EA0; {1.154 $008EAE98}
+  WEAPON_SKILL_LIMIT_ADDR:DWORD = {1.153 $008F5EA0;} {1.154} $008EAE98;
 
 var
   bytesWritten: DWORD;

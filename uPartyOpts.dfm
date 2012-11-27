@@ -1,6 +1,6 @@
 object frmPartyOpts: TfrmPartyOpts
-  Left = 194
-  Top = 124
+  Left = 255
+  Top = 181
   Width = 553
   Height = 370
   Caption = 'Party options'
