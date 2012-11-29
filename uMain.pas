@@ -294,7 +294,7 @@ begin
   //for more comfortly playing in windowed mode
   //remove borders
   SetWindowLong(wnd, GWL_STYLE, GetWindowLong(wnd, GWL_STYLE) XOR
-    (WS_OVERLAPPEDWINDOW OR WS_THICKFRAME));
+    WS_OVERLAPPEDWINDOW);
 
   //make always on top
   SetWindowPos(wnd, HWND_TOP,
