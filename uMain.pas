@@ -293,13 +293,13 @@ begin
 
   //for more comfortly playing in windowed mode
   //remove borders
-  SetWindowLong(wnd, GWL_STYLE, GetWindowLong(Handle, GWL_STYLE) XOR WS_OVERLAPPEDWINDOW);
+  SetWindowLong(wnd, GWL_STYLE, GetWindowLong(wnd, GWL_STYLE) XOR
+    (WS_OVERLAPPEDWINDOW OR WS_THICKFRAME));
 
   //make always on top
   SetWindowPos(wnd, HWND_TOP,
     Monitor.Left, Monitor.Top, Monitor.Width, Monitor.Height,
     SWP_SHOWWINDOW);
-
 
   {try
     dwProcessId := StrToInt('$' + txtProcessId.Text);
