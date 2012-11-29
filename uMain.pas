@@ -422,7 +422,7 @@ function TForm1.SetWeaponSkillLimit(const hProcess: THandle;
   procedure ShowLastError;
   begin
     MessageBox(Handle,
-      PChar('Error on writeing max weapon skill limit: ' +
+      PChar('Error on writing max weapon skill limit: ' +
       SysErrorMessage(GetLastError())), nil, MB_ICONERROR);
   end;
 
