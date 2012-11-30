@@ -35,6 +35,7 @@ const
   STR_SECTION_FILES = 'files';
   STR_FILENAME_ITEMS = 'items';
   STR_FILENAME_TROOPS = 'troops';
+  STR_FILENAME_DESC = 'description.txt';
   STR_OFFSET_CHAR = 'CHAR';
   STR_OFFSET_TABLE = 'TABLE';
   STR_OFFSET_INVENTORY = 'INVENTORY';
@@ -44,6 +45,7 @@ const
   STR_OFFSET_PARTY_COUNT = 'PARTY_COUNT';
   STR_OFFSET_WEAPON_SKILL_LIMIT = 'WEAPON_SKILL_LIMIT';
   STR_GAMEDATA_DIR = 'gamedata';
+
   
   
 implementation

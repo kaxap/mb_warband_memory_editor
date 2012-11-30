@@ -86,8 +86,8 @@ end;
 
 function TGameManager.getGameDesc(index: Integer): String;
 begin
-  Result := uFileManager.getStringFromFile(FDataDir + FGameNames[index] +
-    '\description.txt');
+  Result := uFileManager.getStringFromFile(FDataDir + '\' +
+  FGameNames[index] + '\' + STR_FILENAME_DESC);
 end;
 
 function TGameManager.getGameName(index: Integer): String;
