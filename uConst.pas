@@ -30,7 +30,7 @@ const
   OFFSET_WEAPON_UNK3 = -$18;
   OFFSET_WEAPON_UNK4 = -$14;
 
-  STR_FILE_OFFSETS = 'offsets.ini';
+  STR_FILE_OFFSETS = 'game.ini';
   STR_SECTION_OFFSETS = 'offsets';
   STR_OFFSET_CHAR = 'CHAR';
   STR_OFFSET_TABLE = 'TABLE';
