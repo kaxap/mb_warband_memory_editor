@@ -41,6 +41,7 @@ var
   i: Integer;
 begin
   lbGameNames.Clear;
+  lblDescription.Caption := '';
   for i := 0 to gGameManager.GameCount - 1 do
     lbGameNames.Items.Add(gGameManager.GameName[i])
 end;
