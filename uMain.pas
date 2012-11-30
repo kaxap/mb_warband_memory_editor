@@ -29,6 +29,7 @@ type
     btnCharOpts: TButton;
     Button1: TButton;
     XPManifest1: TXPManifest;
+    tmrOnLoad: TTimer;
     procedure btnAddClick(Sender: TObject);
     procedure FormClose(Sender: TObject; var Action: TCloseAction);
     procedure FormCreate(Sender: TObject);
@@ -44,6 +45,7 @@ type
     procedure btnDup8Click(Sender: TObject);
     procedure btnCharOptsClick(Sender: TObject);
     procedure Button1Click(Sender: TObject);
+    procedure tmrOnLoadTimer(Sender: TObject);
   private
     { Private declarations }
     procedure EditProcessData(Action: TDataAction; Item: TGameItem;
@@ -282,9 +284,6 @@ var
   dwInventory: DWORD;
   wnd: HWND;
 begin
-  frmGameSelector.UpdateGameNames;
-  if frmGameSelector.ShowModal = mrOk then
-    ShowMessage('ok');
 
   wnd := FindWindow(nil, 'Mount&Blade Warband');
   if wnd > 0 then
@@ -453,6 +452,14 @@ begin
 
   if NOT Result then
     ShowLastError;
+end;
+
+procedure TForm1.tmrOnLoadTimer(Sender: TObject);
+begin
+  tmrOnLoad.Enabled := False;
+  frmGameSelector.UpdateGameNames;
+  if frmGameSelector.ShowModal = mrOk then
+    btnGuessAddr.Click;
 end;
 
 end.

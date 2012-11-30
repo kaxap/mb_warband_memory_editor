@@ -236,4 +236,10 @@ object Form1: TForm1
     Left = 208
     Top = 40
   end
+  object tmrOnLoad: TTimer
+    Interval = 500
+    OnTimer = tmrOnLoadTimer
+    Left = 144
+    Top = 40
+  end
 end
