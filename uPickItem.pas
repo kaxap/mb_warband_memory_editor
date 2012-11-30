@@ -20,7 +20,6 @@ type
     procedure btnOkClick(Sender: TObject);
     procedure lbItemsDblClick(Sender: TObject);
   private
-    ssItems: TStringList;
   public
     { Public declarations }
   end;
@@ -42,8 +41,7 @@ end;
 
 procedure TfrmPickItem.FormCreate(Sender: TObject);
 begin
-  ssItems := gGameManager.Items;
-  lbItems.Items.AddStrings(ssItems);
+  lbItems.Items.AddStrings(gGameManager.Items);
   lbItems.Tag := TAG_INDEX;
   lbItems.ItemIndex := 0;
 end;
@@ -60,7 +58,7 @@ begin
     lbItems.Canvas.Lock;
     try
       lbItems.Tag := TAG_INDEX;
-      lbItems.Items.AddStrings(ssItems);
+      lbItems.Items.AddStrings(gGameManager.Items);
     finally
       lbItems.Canvas.Unlock;
     end;
@@ -73,11 +71,11 @@ begin
   try
     lbItems.Tag := TAG_DATA;
 
-    for i := 0 to ssItems.Count - 1 do
+    for i := 0 to gGameManager.Items.Count - 1 do
     begin
-      if Pos(s, AnsiLowerCase(ssItems[i])) > 0 then
+      if Pos(s, AnsiLowerCase(gGameManager.Items[i])) > 0 then
       begin
-        lbItems.AddItem(ssItems[i], Pointer(i));
+        lbItems.AddItem(gGameManager.Items[i], Pointer(i));
       end;
     end;
 
