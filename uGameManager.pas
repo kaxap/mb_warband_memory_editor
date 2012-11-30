@@ -65,6 +65,7 @@ begin
   FGameNames := TStringList.Create;
   FTroops := TStringList.Create;
   FItems := TStringList.Create;
+  LoadGameNames();
 end;
 
 destructor TGameManager.Destroy;
@@ -173,7 +174,7 @@ var
   path: String;
 begin
   Result := False;
-  path := FDataDir + getGameName(index) + '\';
+  path := FDataDir + '\' + getGameName(index) + '\';
   ini := TIniFile.Create(path + STR_FILE_GAME_SETTINGS);
   try
     //get filenames
