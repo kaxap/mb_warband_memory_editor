@@ -61,7 +61,7 @@ var
 
 implementation
 
-uses uPickItem, uConst, uCharacterOpts, uPartyOpts, uPickTroop, uOffsets;
+uses uPickItem, uConst, uCharacterOpts, uPartyOpts, uPickTroop, uGameManager;
 
 {$R *.dfm}
 

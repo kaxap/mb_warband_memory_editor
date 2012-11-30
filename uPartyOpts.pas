@@ -43,7 +43,7 @@ var
 
 implementation
 
-uses uPickTroop, uEditUnit, uOffsets;
+uses uPickTroop, uEditUnit, uGameManager;
 
 {$R *.dfm}
 
