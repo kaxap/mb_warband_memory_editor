@@ -172,7 +172,7 @@ var
   filename_troops, filename_items: String;
 begin
   ini := TIniFile.Create(
-    FDataDir + getGameName(index) + STR_FILE_OFFSETS);
+    FDataDir + getGameName(index) + STR_FILE_GAME_SETTINGS);
   try
   finally
     ini.Free;
