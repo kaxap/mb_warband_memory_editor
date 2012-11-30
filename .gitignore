@@ -44,4 +44,4 @@ Thumbs.db
 
 # Project related #
 *.bak
-*.ini
+settings.ini
