@@ -168,10 +168,15 @@ end;
 function TGameManager.SwitchToGame(const index: Integer): Boolean;
 var
   i: Integer;
-  ini: Integer;
+  ini: TIniFile;
   filename_troops, filename_items: String;
 begin
-  
+  ini := TIniFile.Create(
+    FDataDir + getGameName(index) + STR_FILE_OFFSETS);
+  try
+  finally
+    ini.Free;
+  end;
 end;
 
 initialization
