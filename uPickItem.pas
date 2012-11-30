@@ -86,6 +86,11 @@ begin
 end;
 
 procedure TfrmPickItem.lbItemsDblClick(Sender: TObject);
+begin
+  btnOk.Click;
+end;
+
+procedure TfrmPickItem.btnOkClick(Sender: TObject);
 var
   id: Integer;
 begin
@@ -101,17 +106,6 @@ begin
   end;
 
   lbItems.ItemIndex := 0;
-end;
-
-procedure TfrmPickItem.btnOkClick(Sender: TObject);
-var
-  id: Integer;
-begin
-  if lbItems.ItemIndex < 0 then
-    Exit;
-
-  id := -1;
-  btnOk.Click;
 end;
 
 end.
