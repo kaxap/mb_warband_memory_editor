@@ -75,6 +75,7 @@ object frmGameSelector: TfrmGameSelector
       Height = 40
       Align = alClient
       AutoSize = False
+      ShowAccelChar = False
       WordWrap = True
     end
   end
