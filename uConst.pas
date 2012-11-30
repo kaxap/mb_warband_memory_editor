@@ -42,6 +42,7 @@ const
   STR_OFFSET_WEAPON_SKILL_LIMIT = 'WEAPON_SKILL_LIMIT';
   STR_GAMEDATA_DIR = 'gamedata';
   
+  
 implementation
 
 end.

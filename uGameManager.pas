@@ -22,11 +22,13 @@ type
     FGameNames: TStringList;
     FDataDir: String;
     FTroops: TStringList;
+    FItems: TStringList;
     procedure LoadGameNames();
     function getGameCount: Integer;
     function getGameName(index: Integer): String;
     function getGameDesc(index: Integer): String;
     procedure LoadTroops(const filename: String);
+    procedure LoadItems(const filename: String);
   public
     offsets: TGameOffsetsList;
     constructor Create;
@@ -36,6 +38,7 @@ type
     property GameName[index: Integer]: String read getGameName;
     property GameDesc[index: Integer]: String read getGameDesc;
     property Troops: TStringList read FTroops;
+    property Items: TStringList read FItems;
   end;
 
 var
@@ -61,6 +64,7 @@ begin
   FDataDir := gstrRootDir + STR_GAMEDATA_DIR;
   FGameNames := TStringList.Create;
   FTroops := TStringList.Create;
+  FItems := TStringList.Create;
 end;
 
 destructor TGameManager.Destroy;
@@ -68,6 +72,7 @@ begin
   try
     FTroops.Free;
     FGameNames.Free;
+    FItems.Free;
   finally
     inherited;
   end;  
@@ -92,6 +97,39 @@ end;
 procedure TGameManager.LoadGameNames();
 begin
   uFileManager.getDirList(FDataDir, '*.*', FGameNames);
+end;
+
+procedure TGameManager.LoadItems(const filename: String);
+const
+  PREFIX_ITEM = #32'itm_';
+var
+  ss: TStringList;
+  i, j, k: Integer;
+  s: String;
+begin
+  FItems.Clear;
+  
+  ss := TStringList.Create;
+  try
+    ss.LoadFromFile(filename);
+    for i := 0 to ss.Count - 1 do
+    begin
+      if Copy(ss[i], 1, Length(PREFIX_ITEM)) = PREFIX_ITEM then
+      begin
+        j := PosEx(#32, ss[i], Length(PREFIX_ITEM));
+        k := PosEx(#32, ss[i], j + 1);
+        if j > 0 then
+        begin
+          s := Copy(ss[i], j + 1, k - j -1);
+          FItems.Add(Format('%s [%d]', [s, FItems.Count]));
+
+        end;
+      end;
+    end;
+  finally
+    ss.Free;
+  end;
+
 end;
 
 procedure TGameManager.LoadTroops(const filename: String);
@@ -130,8 +168,10 @@ end;
 function TGameManager.SwitchToGame(const index: Integer): Boolean;
 var
   i: Integer;
+  ini: Integer;
+  filename_troops, filename_items: String;
 begin
-
+  
 end;
 
 initialization

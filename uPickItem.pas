@@ -30,7 +30,7 @@ var
 
 implementation
 
-uses StrUtils, uMain, uConst;
+uses StrUtils, uMain, uConst, uGameManager;
 
 {$R *.dfm}
 
@@ -41,40 +41,11 @@ begin
 end;
 
 procedure TfrmPickItem.FormCreate(Sender: TObject);
-const
-  PREFIX_ITEM = #32'itm_';
-var
-  ss: TStringList;
-  i, j, k: Integer;
-  s: String;
 begin
-  ssItems := TStringList.Create;
-
-  ss := TStringList.Create;
-  try
-    ss.LoadFromFile(ExtractFilePath(Application.ExeName) + 'item_kinds1.txt');
-    for i := 0 to ss.Count - 1 do
-    begin
-      if Copy(ss[i], 1, Length(PREFIX_ITEM)) = PREFIX_ITEM then
-      begin
-        j := PosEx(#32, ss[i], Length(PREFIX_ITEM));
-        k := PosEx(#32, ss[i], j + 1);
-        if j > 0 then
-        begin
-          s := Copy(ss[i], j + 1, k - j -1);
-          ssItems.Add(Format('%s [%d]', [s, ssItems.Count]));
-
-        end;
-      end;
-    end;
-  finally
-    ss.Free;
-  end;
-
+  ssItems := gGameManager.Items;
   lbItems.Items.AddStrings(ssItems);
   lbItems.Tag := TAG_INDEX;
   lbItems.ItemIndex := 0;
-
 end;
 
 procedure TfrmPickItem.txtSearchChange(Sender: TObject);
