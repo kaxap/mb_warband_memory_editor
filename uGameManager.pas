@@ -1,4 +1,4 @@
-unit uOffsets;
+unit uGameManager;
 
 interface
    uses Windows, uTypes, Classes, SysUtils, IniFiles, uConst;
@@ -17,7 +17,7 @@ type
     pWeaponSkillLimit: Pointer;
   end;
 
-  TGameOffsetsManager = class
+  TGameManager = class
   private
     FGameNames: TStringList;
     FDataDir: String;
@@ -36,7 +36,7 @@ type
   end;
 
 var
-  gOffsetMan: TGameOffsetsManager;
+  gOffsetMan: TGameManager;
 
 implementation
 
@@ -44,7 +44,7 @@ uses uFileManager;
 
 { TGameOffsetsManager }
 
-constructor TGameOffsetsManager.Create;
+constructor TGameManager.Create;
 begin
   offsets.dwChar := $140EC;
   offsets.pTable := Pointer($0099BEF4);
@@ -59,34 +59,34 @@ begin
   FGameNames := TStringList.Create;
 end;
 
-destructor TGameOffsetsManager.Destroy;
+destructor TGameManager.Destroy;
 begin
   FGameNames.Free;
   inherited;
 end;
 
-function TGameOffsetsManager.getGameCount: Integer;
+function TGameManager.getGameCount: Integer;
 begin
   Result := FGameNames.Count;
 end;
 
-function TGameOffsetsManager.getGameDesc(index: Integer): String;
+function TGameManager.getGameDesc(index: Integer): String;
 begin
   Result := uFileManager.getStringFromFile(FDataDir + FGameNames[index] +
     '\description.txt');
 end;
 
-function TGameOffsetsManager.getGameName(index: Integer): String;
+function TGameManager.getGameName(index: Integer): String;
 begin
   Result := FGameNames[index];
 end;
 
-procedure TGameOffsetsManager.LoadGameNames();
+procedure TGameManager.LoadGameNames();
 begin
   uFileManager.getDirList(FDataDir, '*.*', FGameNames);
 end;
 
-function TGameOffsetsManager.SwitchToGame(const index: Integer): Boolean;
+function TGameManager.SwitchToGame(const index: Integer): Boolean;
 var
   i: Integer;
 begin
@@ -95,7 +95,7 @@ end;
 
 initialization
 begin
-  gOffsetMan := TGameOffsetsManager.Create;
+  gOffsetMan := TGameManager.Create;
 end;
 
 end.
