@@ -170,13 +170,38 @@ var
   i: Integer;
   ini: TIniFile;
   filename_troops, filename_items: String;
+  path: String;
 begin
-  ini := TIniFile.Create(
-    FDataDir + getGameName(index) + STR_FILE_GAME_SETTINGS);
+  Result := False;
+  path := FDataDir + getGameName(index) + '\';
+  ini := TIniFile.Create(path + STR_FILE_GAME_SETTINGS);
   try
+    //get filenames
+    filename_troops := ini.ReadString(STR_SECTION_FILES, STR_FILENAME_TROOPS,
+      STR_FILENAME_TROOPS);
+    filename_items := ini.ReadString(STR_SECTION_FILES, STR_FILENAME_ITEMS,
+      STR_FILENAME_ITEMS);
+
+    //load offsets  
+    with offsets do
+    begin
+      dwChar := ini.ReadInteger(STR_SECTION_OFFSETS, STR_OFFSET_CHAR, 0);
+      dwInventory := ini.ReadInteger(STR_SECTION_OFFSETS, STR_OFFSET_INVENTORY, 0);
+      dwParty1 := ini.ReadInteger(STR_SECTION_OFFSETS, STR_OFFSET_PARTY_OFFSET1, 0);
+      dwParty2 := ini.ReadInteger(STR_SECTION_OFFSETS, STR_OFFSET_PARTY_OFFSET2, 0);
+      dwParty3 := ini.ReadInteger(STR_SECTION_OFFSETS, STR_OFFSET_PARTY_OFFSET3, 0);
+      dwPartyCount := ini.ReadInteger(STR_SECTION_OFFSETS, STR_OFFSET_PARTY_COUNT, 0);
+
+      pTable := Pointer(ini.ReadInteger(STR_SECTION_OFFSETS, STR_OFFSET_TABLE, 0));
+      pWeaponSkillLimit := Pointer(ini.ReadInteger(STR_SECTION_OFFSETS,
+        STR_OFFSET_WEAPON_SKILL_LIMIT, 0));
+    end;
   finally
     ini.Free;
   end;
+
+  LoadTroops(path + filename_troops);
+  LoadItems(path + filename_items);
 end;
 
 initialization
