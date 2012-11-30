@@ -19,6 +19,7 @@ type
     procedure txtSearchChange(Sender: TObject);
     procedure btnOkClick(Sender: TObject);
     procedure lbItemsDblClick(Sender: TObject);
+    procedure FormShow(Sender: TObject);
   private
   public
     { Public declarations }
@@ -41,7 +42,6 @@ end;
 
 procedure TfrmPickItem.FormCreate(Sender: TObject);
 begin
-  lbItems.Items.AddStrings(gGameManager.Items);
   lbItems.Tag := TAG_INDEX;
   lbItems.ItemIndex := 0;
 end;
@@ -106,6 +106,13 @@ begin
   end;
 
   lbItems.ItemIndex := 0;
+end;
+
+procedure TfrmPickItem.FormShow(Sender: TObject);
+begin
+  //show all items when search box is epty
+  if (txtSearch.Text = '') AND (lbItems.Count = 0) then
+    txtSearch.OnChange(nil);
 end;
 
 end.
