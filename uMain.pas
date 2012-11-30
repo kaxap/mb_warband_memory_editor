@@ -61,7 +61,8 @@ var
 
 implementation
 
-uses uPickItem, uConst, uCharacterOpts, uPartyOpts, uPickTroop, uGameManager;
+uses uPickItem, uConst, uCharacterOpts, uPartyOpts, uPickTroop, uGameManager,
+  uGameSelector;
 
 {$R *.dfm}
 
@@ -129,7 +130,7 @@ begin
   txtUsedAmmount.Tag := TAG_SYNCED;
   cbFlag.Tag := TAG_SYNCED;
 
-  btnGuessAddr.Click;
+  //btnGuessAddr.Click;
 end;
 
 procedure TForm1.EditProcessData(Action: TDataAction; Item: TGameItem;
@@ -281,6 +282,10 @@ var
   dwInventory: DWORD;
   wnd: HWND;
 begin
+  frmGameSelector.UpdateGameNames;
+  if frmGameSelector.ShowModal = mrOk then
+    ShowMessage('ok');
+
   wnd := FindWindow(nil, 'Mount&Blade Warband');
   if wnd > 0 then
   begin

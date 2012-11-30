@@ -11,7 +11,8 @@ uses
   uEditUnit in 'uEditUnit.pas' {frmEditUnit},
   uPickTroop in 'uPickTroop.pas' {frmPickUnit},
   uGameManager in 'uGameManager.pas',
-  uFileManager in 'uFileManager.pas';
+  uFileManager in 'uFileManager.pas',
+  uGameSelector in 'uGameSelector.pas' {frmGameSelector};
 
 {$R *.res}
 
@@ -23,5 +24,6 @@ begin
   Application.CreateForm(TfrmPartyOpts, frmPartyOpts);
   Application.CreateForm(TfrmEditUnit, frmEditUnit);
   Application.CreateForm(TfrmPickUnit, frmPickUnit);
+  Application.CreateForm(TfrmGameSelector, frmGameSelector);
   Application.Run;
 end.
