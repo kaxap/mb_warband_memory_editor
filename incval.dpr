@@ -10,7 +10,7 @@ uses
   uPartyOpts in 'uPartyOpts.pas' {frmPartyOpts},
   uEditUnit in 'uEditUnit.pas' {frmEditUnit},
   uPickTroop in 'uPickTroop.pas' {frmPickUnit},
-  uOffsets in '..\TranslateTooltip\uOffsets.pas';
+  uOffsets in 'uOffsets.pas';
 
 {$R *.res}
 
