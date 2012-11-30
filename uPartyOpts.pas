@@ -43,17 +43,19 @@ var
 
 implementation
 
-uses uPickTroop, uEditUnit;
+uses uPickTroop, uEditUnit, uOffsets;
 
 {$R *.dfm}
 
 function TfrmPartyOpts.ObtainBaseAddr: Boolean;
+(*
 const
   ADDR_STATIC = $0099BEF4; {1.154 $009D5E2C;} {old $9F3E20;} { $009c4de8;}
   OFFSET1 = $138D4 + $7E0; {old $138E4 + $7C0; } { $140b4;}
   OFFSET2 = $0;
   OFFSET3 = $23C; {old $234;} { $23c;}
   OFFSET_COUNT = $c;
+*)
 
 var
   hProcess: THandle;
@@ -68,19 +70,21 @@ begin
 
   try
 
-    if (ReadProcessMemory(hProcess, Pointer(ADDR_STATIC), @addr1,
+    if (ReadProcessMemory(hProcess, gOffsetMan.offsets.pTable, @addr1,
       SizeOf(addr1), dwBytesRead)) AND (dwBytesRead = SizeOf(addr1)) then
     begin
-      if (ReadProcessMemory(hProcess, Pointer(addr1 + OFFSET1), @addr2,
-        SizeOf(addr2), dwBytesRead)) AND (dwBytesRead = SizeOf(addr2)) then
+      if (ReadProcessMemory(hProcess, Pointer(addr1 + gOffsetMan.offsets.dwParty1),
+        @addr2, SizeOf(addr2), dwBytesRead)) AND (dwBytesRead = SizeOf(addr2)) then
       begin
-        if (ReadProcessMemory(hProcess, Pointer(addr2 + OFFSET2), @addr3,
-          SizeOf(addr3), dwBytesRead)) AND (dwBytesRead = SizeOf(addr3)) then
+        if (ReadProcessMemory(hProcess, Pointer(addr2 + gOffsetMan.offsets.dwParty2),
+           @addr3, SizeOf(addr3), dwBytesRead)) AND (dwBytesRead = SizeOf(addr3)) then
         begin
 
-          dwCountAddr := addr3 + OFFSET3 + OFFSET_COUNT;
+          dwCountAddr := addr3 + gOffsetMan.offsets.dwParty3 +
+            gOffsetMan.offsets.dwPartyCount;
 
-          if (ReadProcessMemory(hProcess, Pointer(addr3 + OFFSET3), @dwBaseAddr,
+          if (ReadProcessMemory(hProcess,
+            Pointer(addr3 + gOffsetMan.offsets.dwParty3), @dwBaseAddr,
             SizeOf(dwBaseAddr), dwBytesRead)) AND (dwBytesRead = SizeOf(dwBaseAddr)) then
           begin
             Result := True;

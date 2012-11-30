@@ -61,7 +61,7 @@ var
 
 implementation
 
-uses uPickItem, uConst, uCharacterOpts, uPartyOpts, uPickTroop;
+uses uPickItem, uConst, uCharacterOpts, uPartyOpts, uPickTroop, uOffsets;
 
 {$R *.dfm}
 
@@ -267,10 +267,11 @@ begin
 end;
 
 procedure TForm1.btnGuessAddrClick(Sender: TObject);
-const
+(*const
   CHAR_OFFSET =  { $140DC;} $140EC;
   TABLE_ADDR =  {1.153 $009D5E2C; } {1.154 } $0099BEF4; { $009f3e20;} { $009c4de8;}
-  INVENTORY_OFFSET = $2D0;
+  INVENTORY_OFFSET = $2D0;*)
+
 var
   dwProcessId, dwAddress: DWORD;
   hProcess: THandle;
@@ -301,13 +302,6 @@ begin
     Monitor.Left, Monitor.Top, Monitor.Width, Monitor.Height,
     SWP_SHOWWINDOW);
 
-  {try
-    dwProcessId := StrToInt('$' + txtProcessId.Text);
-  except
-    Application.MessageBox('Errorneus data', nil, MB_ICONERROR);
-    Exit;
-  end;}
-
   hProcess := OpenProcess(PROCESS_ALL_ACCESS, False, dwProcessId);
 
   try
@@ -320,7 +314,7 @@ begin
     end;
 
     if NOT ReadProcessMemory(hProcess,
-      Pointer(TABLE_ADDR), @pTable, SizeOf(pTable), dwBytesRead) OR
+      gOffsetMan.offsets.pTable, @pTable, SizeOf(pTable), dwBytesRead) OR
         (dwBytesRead <> SizeOf(pTable)) then
     begin
       Application.MessageBox('Cannot READ data from process'' memory', nil,
@@ -329,12 +323,12 @@ begin
       Exit;
     end;
 
-    pTable := pTable + CHAR_OFFSET;
+    pTable := pTable + gOffsetMan.offsets.dwChar;
 
     if ReadProcessMemory(hProcess, Pointer(pTable), @pCharacter, SizeOf(pCharacter),
       dwBytesRead) then
     begin
-      dwInventory := pCharacter + INVENTORY_OFFSET;
+      dwInventory := pCharacter + gOffsetMan.offsets.dwInventory;
       txtAddr.Text := Format('%x', [dwInventory]);
     end;
 
@@ -426,15 +420,15 @@ function TForm1.SetWeaponSkillLimit(const hProcess: THandle;
       SysErrorMessage(GetLastError())), nil, MB_ICONERROR);
   end;
 
-const
-  WEAPON_SKILL_LIMIT_ADDR:DWORD = {1.153 $008F5EA0;} {1.154} $008EAE98;
+(*const
+  WEAPON_SKILL_LIMIT_ADDR:DWORD = {1.153 $008F5EA0;} {1.154} $008EAE98;*)
 
 var
   bytesWritten: DWORD;
   OldProtect: DWORD;
   temp: DWORD;
 begin
-  Result := VirtualProtectEx(hProcess, Pointer(WEAPON_SKILL_LIMIT_ADDR),
+  Result := VirtualProtectEx(hProcess, gOffsetMan.offsets.pWeaponSkillLimit,
     SizeOf(limit), PAGE_EXECUTE_READWRITE, OldProtect);
 
   if NOT Result then
@@ -443,13 +437,13 @@ begin
     Exit;
   end;
 
-  Result := WriteProcessMemory(hProcess, Pointer(WEAPON_SKILL_LIMIT_ADDR),
+  Result := WriteProcessMemory(hProcess, gOffsetMan.offsets.pWeaponSkillLimit,
     @limit, SizeOf(limit), bytesWritten) AND (bytesWritten = SizeOf(limit));
 
   if NOT Result then
     ShowLastError;
 
-  Result := VirtualProtectEx(hProcess, Pointer(WEAPON_SKILL_LIMIT_ADDR),
+  Result := VirtualProtectEx(hProcess, gOffsetMan.offsets.pWeaponSkillLimit,
     SizeOf(limit), OldProtect, temp);
 
   if NOT Result then

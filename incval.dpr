@@ -9,7 +9,8 @@ uses
   uCharacterOpts in 'uCharacterOpts.pas' {frmCharOpts},
   uPartyOpts in 'uPartyOpts.pas' {frmPartyOpts},
   uEditUnit in 'uEditUnit.pas' {frmEditUnit},
-  uPickTroop in 'uPickTroop.pas' {frmPickUnit};
+  uPickTroop in 'uPickTroop.pas' {frmPickUnit},
+  uOffsets in '..\TranslateTooltip\uOffsets.pas';
 
 {$R *.res}
 

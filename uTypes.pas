@@ -24,7 +24,6 @@ type
     pUnk: Pointer;
   end;
 
-
 implementation
 
 end.
