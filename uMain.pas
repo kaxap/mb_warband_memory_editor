@@ -314,7 +314,7 @@ begin
     end;
 
     if NOT ReadProcessMemory(hProcess,
-      gOffsetMan.offsets.pTable, @pTable, SizeOf(pTable), dwBytesRead) OR
+      gGameManager.offsets.pTable, @pTable, SizeOf(pTable), dwBytesRead) OR
         (dwBytesRead <> SizeOf(pTable)) then
     begin
       Application.MessageBox('Cannot READ data from process'' memory', nil,
@@ -323,12 +323,12 @@ begin
       Exit;
     end;
 
-    pTable := pTable + gOffsetMan.offsets.dwChar;
+    pTable := pTable + gGameManager.offsets.dwChar;
 
     if ReadProcessMemory(hProcess, Pointer(pTable), @pCharacter, SizeOf(pCharacter),
       dwBytesRead) then
     begin
-      dwInventory := pCharacter + gOffsetMan.offsets.dwInventory;
+      dwInventory := pCharacter + gGameManager.offsets.dwInventory;
       txtAddr.Text := Format('%x', [dwInventory]);
     end;
 
@@ -428,7 +428,7 @@ var
   OldProtect: DWORD;
   temp: DWORD;
 begin
-  Result := VirtualProtectEx(hProcess, gOffsetMan.offsets.pWeaponSkillLimit,
+  Result := VirtualProtectEx(hProcess, gGameManager.offsets.pWeaponSkillLimit,
     SizeOf(limit), PAGE_EXECUTE_READWRITE, OldProtect);
 
   if NOT Result then
@@ -437,13 +437,13 @@ begin
     Exit;
   end;
 
-  Result := WriteProcessMemory(hProcess, gOffsetMan.offsets.pWeaponSkillLimit,
+  Result := WriteProcessMemory(hProcess, gGameManager.offsets.pWeaponSkillLimit,
     @limit, SizeOf(limit), bytesWritten) AND (bytesWritten = SizeOf(limit));
 
   if NOT Result then
     ShowLastError;
 
-  Result := VirtualProtectEx(hProcess, gOffsetMan.offsets.pWeaponSkillLimit,
+  Result := VirtualProtectEx(hProcess, gGameManager.offsets.pWeaponSkillLimit,
     SizeOf(limit), OldProtect, temp);
 
   if NOT Result then

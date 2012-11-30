@@ -30,7 +30,6 @@ type
   public
     { Public declarations }
     dwProcessId: DWORD;
-    ATroops: TStringList;
     function ObtainBaseAddr: Boolean;
     function RefreshGameData: Boolean;
     function ReadData(const offset: Integer): TUnitEntry;
@@ -70,21 +69,21 @@ begin
 
   try
 
-    if (ReadProcessMemory(hProcess, gOffsetMan.offsets.pTable, @addr1,
+    if (ReadProcessMemory(hProcess, gGameManager.offsets.pTable, @addr1,
       SizeOf(addr1), dwBytesRead)) AND (dwBytesRead = SizeOf(addr1)) then
     begin
-      if (ReadProcessMemory(hProcess, Pointer(addr1 + gOffsetMan.offsets.dwParty1),
+      if (ReadProcessMemory(hProcess, Pointer(addr1 + gGameManager.offsets.dwParty1),
         @addr2, SizeOf(addr2), dwBytesRead)) AND (dwBytesRead = SizeOf(addr2)) then
       begin
-        if (ReadProcessMemory(hProcess, Pointer(addr2 + gOffsetMan.offsets.dwParty2),
+        if (ReadProcessMemory(hProcess, Pointer(addr2 + gGameManager.offsets.dwParty2),
            @addr3, SizeOf(addr3), dwBytesRead)) AND (dwBytesRead = SizeOf(addr3)) then
         begin
 
-          dwCountAddr := addr3 + gOffsetMan.offsets.dwParty3 +
-            gOffsetMan.offsets.dwPartyCount;
+          dwCountAddr := addr3 + gGameManager.offsets.dwParty3 +
+            gGameManager.offsets.dwPartyCount;
 
           if (ReadProcessMemory(hProcess,
-            Pointer(addr3 + gOffsetMan.offsets.dwParty3), @dwBaseAddr,
+            Pointer(addr3 + gGameManager.offsets.dwParty3), @dwBaseAddr,
             SizeOf(dwBaseAddr), dwBytesRead)) AND (dwBytesRead = SizeOf(dwBaseAddr)) then
           begin
             Result := True;
@@ -171,7 +170,7 @@ begin
   item := lvUnits.Items.Add();
   item.Caption := '';
   try
-    item.SubItems.Add(ATroops[UnitEntry.id]);
+    item.SubItems.Add(gGameManager.Troops[UnitEntry.id]);
   except
   end;
   item.SubItems.Add(IntToStr(UnitEntry.count));
@@ -188,39 +187,8 @@ begin
 end;
 
 procedure TfrmPartyOpts.FormCreate(Sender: TObject);
-const
-  PREFIX_TROOP = 'trp_';
-var
-  ss: TStringList;
-  i, j, k: Integer;
-  s: String;
 begin
-  ATroops := TStringList.Create;
-
-  ss := TStringList.Create;
-  try
-    ss.LoadFromFile(ExtractFilePath(Application.ExeName) + 'troops.txt');
-    for i := 0 to ss.Count - 1 do
-    begin
-      if Copy(ss[i], 1, Length(PREFIX_TROOP)) = PREFIX_TROOP then
-      begin
-        //find 2 first spaces after prefix
-        j := PosEx(#32, ss[i], Length(PREFIX_TROOP));
-        k := PosEx(#32, ss[i], j + 1);
-        if j > 0 then
-        begin
-          //copy text between spaces
-          s := Copy(ss[i], j + 1, k - j - 1);
-          ATroops.Add(Format('%s [%d]', [s, ATroops.Count]));
-        end;
-      end;
-    end;
-  finally
-    ss.Free;
-  end;
-
   AMemory := TMemoryStream.Create;
-
 end;
 
 procedure TfrmPartyOpts.lvUnitsDblClick(Sender: TObject);

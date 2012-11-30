@@ -1,7 +1,7 @@
 unit uGameManager;
 
 interface
-   uses Windows, uTypes, Classes, SysUtils, IniFiles, uConst;
+   uses Windows, uTypes, Classes, SysUtils, IniFiles, uConst, StrUtils;
 
 
 type
@@ -21,22 +21,25 @@ type
   private
     FGameNames: TStringList;
     FDataDir: String;
+    FTroops: TStringList;
     procedure LoadGameNames();
     function getGameCount: Integer;
     function getGameName(index: Integer): String;
     function getGameDesc(index: Integer): String;
+    procedure LoadTroops(const filename: String);
   public
     offsets: TGameOffsetsList;
     constructor Create;
     destructor Destroy; override;
+    function SwitchToGame(const index: Integer): Boolean;
     property GameCount:Integer read getGameCount;
     property GameName[index: Integer]: String read getGameName;
     property GameDesc[index: Integer]: String read getGameDesc;
-    function SwitchToGame(const index: Integer): Boolean;
+    property Troops: TStringList read FTroops;
   end;
 
 var
-  gOffsetMan: TGameManager;
+  gGameManager: TGameManager;
 
 implementation
 
@@ -57,12 +60,17 @@ begin
 
   FDataDir := gstrRootDir + STR_GAMEDATA_DIR;
   FGameNames := TStringList.Create;
+  FTroops := TStringList.Create;
 end;
 
 destructor TGameManager.Destroy;
 begin
-  FGameNames.Free;
-  inherited;
+  try
+    FTroops.Free;
+    FGameNames.Free;
+  finally
+    inherited;
+  end;  
 end;
 
 function TGameManager.getGameCount: Integer;
@@ -86,6 +94,39 @@ begin
   uFileManager.getDirList(FDataDir, '*.*', FGameNames);
 end;
 
+procedure TGameManager.LoadTroops(const filename: String);
+const
+  PREFIX_TROOP = 'trp_';
+var
+  ss: TStringList;
+  i, j, k: Integer;
+  s: String;
+begin
+  FTroops.Clear;
+
+  ss := TStringList.Create;
+  try
+    ss.LoadFromFile(filename);
+    for i := 0 to ss.Count - 1 do
+    begin
+      if Copy(ss[i], 1, Length(PREFIX_TROOP)) = PREFIX_TROOP then
+      begin
+        //find 2 first spaces after prefix
+        j := PosEx(#32, ss[i], Length(PREFIX_TROOP));
+        k := PosEx(#32, ss[i], j + 1);
+        if j > 0 then
+        begin
+          //copy text between spaces
+          s := Copy(ss[i], j + 1, k - j - 1);
+          FTroops.Add(Format('%s [%d]', [s, FTroops.Count]));
+        end;
+      end;
+    end;
+  finally
+    ss.Free;
+  end;
+end;
+
 function TGameManager.SwitchToGame(const index: Integer): Boolean;
 var
   i: Integer;
@@ -95,7 +136,7 @@ end;
 
 initialization
 begin
-  gOffsetMan := TGameManager.Create;
+  gGameManager := TGameManager.Create;
 end;
 
 end.

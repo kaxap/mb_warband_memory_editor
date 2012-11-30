@@ -30,7 +30,7 @@ var
 
 implementation
 
-uses uConst, uPartyOpts;
+uses uConst, uPartyOpts, uGameManager;
 
 {$R *.dfm}
 
@@ -91,7 +91,7 @@ end;
 
 procedure TfrmPickUnit.FormCreate(Sender: TObject);
 begin
-  ssItems := frmPartyOpts.ATroops;
+  ssItems := gGameManager.Troops;
   lbItems.Items.AddStrings(ssItems);
   lbItems.Tag := TAG_INDEX;
   lbItems.ItemIndex := 0;
