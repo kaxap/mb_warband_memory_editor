@@ -10,7 +10,8 @@ uses
   uPartyOpts in 'uPartyOpts.pas' {frmPartyOpts},
   uEditUnit in 'uEditUnit.pas' {frmEditUnit},
   uPickTroop in 'uPickTroop.pas' {frmPickUnit},
-  uOffsets in 'uOffsets.pas';
+  uOffsets in 'uOffsets.pas',
+  uFileManager in 'uFileManager.pas';
 
 {$R *.res}
 
