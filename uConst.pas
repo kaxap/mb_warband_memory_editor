@@ -33,6 +33,9 @@ const
   STR_FILE_GAME_SETTINGS = 'game.ini';
   STR_SECTION_OFFSETS = 'offsets';
   STR_SECTION_FILES = 'files';
+  STR_SECTION_GAME = 'game';
+  STR_WINDOW_CAPTION = 'window_caption';
+  STR_WINDOW_CAPTION_DEFAULT = 'Mount&Blade Warband';
   STR_FILENAME_ITEMS = 'items';
   STR_FILENAME_TROOPS = 'troops';
   STR_FILENAME_DESC = 'description.txt';

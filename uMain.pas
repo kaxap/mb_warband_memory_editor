@@ -285,7 +285,7 @@ var
   wnd: HWND;
 begin
 
-  wnd := FindWindow(nil, 'Mount&Blade Warband');
+  wnd := FindWindow(nil, PChar(gGameManager.WindowCaption));
   if wnd > 0 then
   begin
     GetWindowThreadProcessId(wnd, @dwProcessId);

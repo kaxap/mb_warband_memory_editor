@@ -23,6 +23,7 @@ type
     FDataDir: String;
     FTroops: TStringList;
     FItems: TStringList;
+    FWindowCaption: String;
     procedure LoadGameNames();
     function getGameCount: Integer;
     function getGameName(index: Integer): String;
@@ -39,6 +40,7 @@ type
     property GameDesc[index: Integer]: String read getGameDesc;
     property Troops: TStringList read FTroops;
     property Items: TStringList read FItems;
+    property WindowCaption: String read FWindowCaption;
   end;
 
 var
@@ -66,6 +68,7 @@ begin
   FTroops := TStringList.Create;
   FItems := TStringList.Create;
   LoadGameNames();
+  FWindowCaption := STR_WINDOW_CAPTION_DEFAULT;
 end;
 
 destructor TGameManager.Destroy;
@@ -182,6 +185,9 @@ begin
       STR_FILENAME_TROOPS);
     filename_items := ini.ReadString(STR_SECTION_FILES, STR_FILENAME_ITEMS,
       STR_FILENAME_ITEMS);
+
+    FWindowCaption := ini.ReadString(STR_SECTION_GAME, STR_WINDOW_CAPTION,
+      STR_WINDOW_CAPTION_DEFAULT);
 
     //load offsets  
     with offsets do
