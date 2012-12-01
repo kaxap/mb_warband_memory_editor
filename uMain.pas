@@ -306,6 +306,9 @@ begin
     Monitor.Left, Monitor.Top, Monitor.Width, Monitor.Height,
     SWP_SHOWWINDOW);
 
+  //hide menu
+  Windows.SetMenu(wnd, 0);
+
   hProcess := OpenProcess(PROCESS_ALL_ACCESS, False, dwProcessId);
 
   try
